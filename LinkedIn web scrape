@@ -1,0 +1,51 @@
+import os
+from selenium import webdriver
+from selenium.webdriver.common.by import By
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+import time
+import random
+import numpy as np
+import lxml
+import pandas as pd
+from bs4 import BeautifulSoup
+from selenium import webdriver
+
+import nltk
+import pandas as pd
+from nltk import word_tokenize, FreqDist
+from nltk.corpus import stopwords
+from nltk.stem import WordNetLemmatizer
+nltk.download
+nltk.download('wordnet')
+nltk.download('stopwords')
+from nltk.tokenize import TweetTokenizer
+from collections import Counter
+import requests
+import re
+import string
+
+from selenium.webdriver.common.keys import Keys
+
+def preprocess(text):
+    text = text.lower() 
+    text=text.strip()  
+    text=re.compile('<.*?>').sub('', text) 
+    text = re.compile('[%s]' % re.escape(string.punctuation)).sub(' ', text)  
+    text = re.sub('\s+', ' ', text)  
+    text = re.sub(r'\[[0-9]*\]',' ',text) 
+    text=re.sub(r'[^\w\s]', '', str(text).lower().strip())
+    text = re.sub(r'\d',' ',text) 
+    text = re.sub(r'\s+',' ',text) 
+    return text
+
+def stopword(string):
+    a= [i for i in string.split() if i not in stopwords.words('english')]
+    return ' '.join(a)
+
+def finalpreprocess(string):
+    return stopword(preprocess(string))
+
+def findtopwords(text):
+    counts = Counter(re.findall('\w+', text))
+    return counts.most_common()[0:5]
